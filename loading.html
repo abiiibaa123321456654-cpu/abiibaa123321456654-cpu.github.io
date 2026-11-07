@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>GMod Loading Screen</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background: #0c0d12; /* Темный фон */
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Тот самый элемент из твоего рисунка */
+        .joke-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .joke-box {
+            width: 250px;
+            height: 120px;
+            border: 3px solid white; /* Белая рамка как на фото */
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .joke-text {
+            margin-left: 15px;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: lowercase;
+        }
+
+        /* Основная карточка загрузки */
+        .loading-card {
+            background: rgba(20, 22, 31, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .server-title { font-size: 28px; color: #4e9af1; margin-bottom: 10px; }
+        
+        .progress-container {
+            background: #222;
+            height: 12px;
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4e9af1;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .status { font-size: 14px; color: #888; }
+    </style>
+</head>
+<body>
+
+    <!-- ЭЛЕМЕНТ С ТВОЕГО ФОТО -->
+    <div class="joke-container">
+        <div class="joke-box"></div>
+        <div class="joke-text">
+            ← все что находится здесь не правда
+        </div>
+    </div>
+
+    <!-- ЦЕНТРАЛЬНЫЙ БЛОК ЗАГРУЗКИ -->
+    <div class="loading-card">
+        <h1 id="s-name">Загрузка сервера</h1>
+        <p id="m-name">Карта: ...</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="p-bar"></div>
+        </div>
+        
+        <div class="status" id="status">Ожидание данных...</div>
+    </div>
+
+    <script>
+        // Функции для GMod
+        function GameDetails(servername, serverurl, mapname) {
+            document.getElementById('s-name').innerText = servername;
+            document.getElementById('m-name').innerText = "Карта: " + mapname;
+        }
+
+        function SetStatusChanged(status) {
+            document.getElementById('status').innerText = status;
+        }
+
+        function SetFilesTotal(total) { window.totalFiles = total; }
+        
+        function SetFilesNeeded(needed) {
+            if (window.totalFiles > 0) {
+                let perc = ((window.totalFiles - needed) / window.totalFiles) * 100;
+                document.getElementById('p-bar').style.width = perc + "%";
+            }
+        }
+    </script>
+
+</body>
+</html>
